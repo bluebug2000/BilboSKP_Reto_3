@@ -103,4 +103,20 @@ public class BilboSKP extends DBC{
 	}
 	
 	//TODO METODO 
+	ta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/header_footerR.css">
+<link rel="stylesheet" href="css/quienes_somosV2.css">
+<link rel="stylesheet" href="normalize.css">
+
+<title>BilboSKP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link
+	href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+	rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="img/favicon.png">
+</head>
+<body>
+	<%--<%@include file="plantillas/nav.jsp"--%>
+	<header>
+	<ul>
 }
