@@ -102,5 +102,26 @@ public class BilboSKP extends DBC{
 		System.out.println("DBC_BilboSKP: "+mensaje);
 	}
 	
-	//TODO METODO 
+	public static Vector<Cupon> getCuponesSuscriptor(int idSuscriptor) throws Throwable {
+
+		Vector<Cupon> vectorCupones = new Vector<Cupon>();
+		// hacer sentencia sql select todas las salas
+		String sentenciaSQL = "select * from cupon idSuscriptor = "+idSuscriptor+";";
+		// hacer una conexion
+		BilboSKP conexion = new BilboSKP();
+		//se hace una consulta sql con la conexion y se guarda en el resultset resultado
+		ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+		// hacer un bucle de cada fila que tiene el resultset resultado
+		while (resultado.next()) {
+			// obtener los campos de cada columna para esta fila
+			String idCupon = resultado.getString("idCupon");
+			Date fechaCaducidad = resultado.getDate("fechaCaducidad");
+			String dificultad = resultado.getString("estado");
+			System.out.println(idCupon);
+			Cupon cupon = null; // new Cupon(idCupon,fechaCaducidad,dificultad);
+			// agregar cupon al vector
+			vectorCupones.add(cupon);
+		}
+		return vectorCupones;
+	}
 }
