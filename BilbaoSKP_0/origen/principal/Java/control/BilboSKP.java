@@ -124,4 +124,31 @@ public class BilboSKP extends DBC{
 		}
 		return vectorCupones;
 	}
+	public static Suscriptor getDatosSuscriptor(int idSuscriptor) throws Throwable {
+
+		// hacer sentencia sql select todas las salas
+		String sentenciaSQL = "select * from suscriptor where idSuscriptor = " + idSuscriptor + ";";
+		// hacer una conexion
+		BilboSKP conexion = new BilboSKP();
+		// se hace una consulta sql con la conexion y se guarda en el resultset
+		// resultado
+		ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+		// hacer un bucle de cada fila que tiene el resultset resultado
+		resultado.next();
+		// obtener los campos de cada columna para esta fila
+		int telefono = resultado.getInt("telefono");
+		String email = resultado.getString("email");
+		String pass = resultado.getString("pass");
+		String alias = resultado.getString("alias");
+		String nombre = resultado.getString("nombre");
+		String apellidos = resultado.getString("apellidos");
+		String imagen = resultado.getString("imagen");
+		int activo = resultado.getInt("activo");
+		Date fech_nac = resultado.getDate("fech_nac");
+
+		Suscriptor suscriptor = new Suscriptor(idSuscriptor, telefono, email, pass, alias, nombre, apellidos, imagen,
+				activo, fech_nac);
+
+		return suscriptor;
+	}
 }
