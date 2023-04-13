@@ -1,8 +1,10 @@
 package control;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Vector;
+import java.text.SimpleDateFormat;
 
 import connection.DBC;
 import model.Sala;
@@ -182,7 +184,48 @@ public class BilboSKP extends DBC{
 			return false;
 
 		}
-	
+	// conectarse a la BD y obtener todos los horarios de la sala fisica que introduzcas
+		public static Vector<Horario> obtenerFechasFisica(String idSala) throws Throwable {
+			try {
+				// crear el vector que vamos a devolver
+				Vector<Horario> vectorFechasSalasFisicas = new Vector<Horario>();
+				
+				// hacer sentencia sql select todas las reservas de la sala que queremos
+				String sentenciaSQL = "select * from horario where idSalaFisica= '"+idSala+"' and disponible=1 order by date(fechaHora);";
+				//hacer una conexion
+				BilboSKP conexion = new BilboSKP();
+				ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+				//hacer un bucle de cada fila que tiene el resultset
+				while (resultado.next()) {
+					//obtener los campos de cada columna para esta fila
+					String idSalaFisica = resultado.getString("idSalaFisica");
+					Timestamp  fechaHora = resultado.getTimestamp ("fechaHora");
+					boolean disponible = resultado.getBoolean("disponible");
+
+					Horario horario = new Horario(idSalaFisica, fechaHora, disponible);
+					//agregar horario al vector
+					vectorFechasSalasFisicas.add(horario);
+				}
+				
+				//hacer syso de los horarios obtenidos
+				System.out.println("Horarios disponibles en la sala con id "+idSala+":");
+				if (vectorFechasSalasFisicas.size()>0) {
+					for (int i=0;i<vectorFechasSalasFisicas.size(); i++) {
+						Horario ho = vectorFechasSalasFisicas.get(i);
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		                String fechaHoraString = sdf.format(ho.getFechaHora());
+		                System.out.println(fechaHoraString);
+						//System.out.println(HO.getFechaHora());
+					}
+				}
+				conexion.cerrarFlujo();
+				return vectorFechasSalasFisicas;
+			} catch (Exception e) {
+				BilboSKP.sysoError("Error en getFechasSalasFisicas");
+				e.printStackTrace();
+			}
+			return null;
+		}
 	//TODO FALTA HACER CLASE CUPON
 	public static Vector<Cupon> getCuponesSuscriptor(int idSuscriptor) throws Throwable {
 		Vector<Cupon> vectorCupones = new Vector<Cupon>();
