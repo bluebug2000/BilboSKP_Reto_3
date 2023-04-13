@@ -5,13 +5,13 @@ import java.util.HashMap;
 public class SalaFisica extends Sala{
 	private String direccion;
 	private int telefono;
-	//este hashmap contendrá todas las salas fisicas disponibles
+	//este hashmap contendrÃ¡ todas las salas fisicas disponibles
 	private static HashMap<String, Sala> salasFisicasCargadas = new HashMap<String, Sala>();
 	
 	public SalaFisica(String idSala, String nombre, String dificultad, String tematica, String descripcion,
-			int tiempoMax, int jugadoresMin, int jugadoresMax, int edadRecomendada, String direccion, int telefono) {
+			int tiempoMax, int jugadoresMin, int jugadoresMax, int edad_recomendada, String direccion, int telefono) {
 		super(idSala, nombre, dificultad, tematica, descripcion, tiempoMax, jugadoresMin, jugadoresMax,
-				edadRecomendada);
+				edad_recomendada);
 		this.direccion = direccion;
 		this.telefono = telefono;
 	}
