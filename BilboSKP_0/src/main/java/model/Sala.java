@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 public abstract class Sala {
 	private String idSala, nombre, dificultad, tematica, descripcion;
-	private int tiempoMax, jugadoresMin, jugadoresMax, edadRecomendada;
+	private int tiempoMax, jugadoresMin, jugadoresMax, edad_recomendada;
 	
 	private static HashMap<String, Sala> salasCargadas = new HashMap<String, Sala>();
 	
 	public Sala(String idSala, String nombre, String dificultad, String tematica, String descripcion, int tiempoMax,
-			int jugadoresMin, int jugadoresMax, int edadRecomendada) {
+			int jugadoresMin, int jugadoresMax, int edad_recomendada) {
 		super();
 		setIdSala(idSala);
 		setNombre(nombre);
@@ -19,7 +19,7 @@ public abstract class Sala {
 		setTiempoMax(tiempoMax);
 		setJugadoresMin(jugadoresMin);
 		setJugadoresMax(jugadoresMax);
-		setEdadRecomendada(edadRecomendada);
+		setEdad_recomendada(edad_recomendada);
 	}
 	public String getTematica() {
 		return tematica;
@@ -54,11 +54,11 @@ public abstract class Sala {
 	public void setJugadoresMax(int jugadoresMax) {
 		this.jugadoresMax = jugadoresMax;
 	}
-	public int getEdadRecomendada() {
-		return edadRecomendada;
+	public int getEdad_recomendada() {
+		return edad_recomendada;
 	}
-	public void setEdadRecomendada(int edadRecomendada) {
-		this.edadRecomendada = edadRecomendada;
+	public void setEdad_recomendada(int edad_recomendada) {
+		this.edad_recomendada = edad_recomendada;
 	}
 	public void setIdSala(String idSala) {
 		this.idSala = idSala;
