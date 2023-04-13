@@ -271,5 +271,62 @@ public class BilboSKP extends DBC{
 
 	//TODO cancelar una reserva dado su id 
 
-	
+	// este metodo va a verificar si el email y contraseña son correctos, si son
+	// correctos devuelve el suscriptor.
+	public static Suscriptor loginSuscriptor(String email, String pass) throws Throwable {
+
+		// hacer sentencia sql select todas las salas
+		String sentenciaSQL = "select * from suscriptor where email = '" + email + "' and pass='" + pass + "';";
+		// hacer una conexion
+		BilboSKP conexion = new BilboSKP();
+		// se hace una consulta sql con la conexion y se guarda en el resultset
+		// resultado
+		ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+		// hacer un if de cada fila que tiene el resultset resultado
+		if (resultado.next()) {
+			int telefono = resultado.getInt("telefono");
+			String alias = resultado.getString("alias");
+			String nombre = resultado.getString("nombre");
+			String apellidos = resultado.getString("apellidos");
+			String imagen = resultado.getString("imagen");
+			int activo = resultado.getInt("activo");
+			Date fech_nac = resultado.getDate("fech_nac");
+			int idSuscriptor = resultado.getInt("idSuscriptor");
+
+			System.out.println("se ha devuelto al menos una linea");
+
+			Suscriptor suscriptor = new Suscriptor(idSuscriptor, telefono, email, pass, alias, nombre, apellidos,
+					imagen, activo, fech_nac);
+			System.out.println("Bienvenido, tu email es" + suscriptor.getEmail());
+			return suscriptor;
+		} else {
+			System.out.println("usuario o pass incorrecto");
+		}
+		return null;
+	}
+
+	// metodo que pide los campos de un suscriptor y crea una suscripcion
+	public static Suscriptor crearSuscripcion(String email, String pass, int telefono, String alias, String nombre,
+			String apellidos, String fech_nac) throws Throwable {
+		// hacer sentencia sql select todas las salas
+		String sentenciaSQL = "INSERT INTO `suscriptor` (`email`, `pass`, `alias`, `nombre`, `apellidos`, `fech_nac`, `telefono`) VALUES ('"
+				+ email + "', '" + pass + "', '" + alias + "', '" + nombre + "', '" + apellidos + "', '" + fech_nac
+				+ "', '" + telefono + "');";
+		// hacer una conexion
+		BilboSKP conexion = new BilboSKP();
+		// se hace una consulta sql con la conexion y se guarda en el resultset
+		// resultado
+		int filasAfectadas = conexion.SQLUpdate(sentenciaSQL);
+		if (filasAfectadas == 1) {
+
+			return loginSuscriptor(email, pass);
+
+		} else {
+			System.out.println("no se pudo crear suscriptor");
+			return null;
+		}
+		
+		
+
+	}
 }
