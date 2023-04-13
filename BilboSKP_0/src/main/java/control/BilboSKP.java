@@ -233,4 +233,43 @@ public class BilboSKP extends DBC{
 
 		return suscriptor;
 	}
+		
+    //obtener las reservas de un suscriptor de la bd
+	public static Vector<Reserva> obtenerReserva(int idSuscriptor) throws Throwable {
+		Vector<Reserva> reservas= new Vector<Reserva>();
+		String sentenciaSQL="SELECT * FROM reserva WHERE idSuscriptor="+idSuscriptor+" order by fechaHora ";
+		BilboSKP conexion = new BilboSKP();
+		ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+	
+		while(resultado.next()) {
+			 //String idSuscriptor= resultado.getString(idSuscriptor);
+			 String idReserva=resultado.getString("idReserva");
+			 String idSalaFisica= resultado.getString("idSalaFisica");
+			 int numJugadores= resultado.getInt("numJugadores");
+			 Date fechaHora= resultado.getDate("fechaHora");
+			 
+			 Reserva reserva= new Reserva(idReserva, idSalaFisica, numJugadores, numJugadores, fechaHora);
+			 reservas.add(reserva);
+		}
+		
+		if(reservas.size()>0){
+			for (int i=0;i<reservas.size(); i++) {
+				Reserva r = reservas.get(i);
+				System.out.println(r.getIdReserva());
+			}
+			return reservas;
+		}
+		else {
+			
+		}
+		return reservas;
+	}
+	//TODO hacer una nueva reserva de una sala física 
+	public void crearReserva() {
+		
+	}
+
+	//TODO cancelar una reserva dado su id 
+
+	
 }
