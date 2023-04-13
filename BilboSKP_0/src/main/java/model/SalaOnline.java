@@ -7,8 +7,8 @@ public class SalaOnline extends Sala{
 	private static HashMap<String, Sala> salasOnlineCargadas = new HashMap<String, Sala>();
 
 	public SalaOnline(String idSala, String nombre, String dificultad, String tematica, String descripcion,
-			int tiempoMax, int jugadoresMin, int jugadoresMax, int edadRecomendada) {
-		super(idSala, nombre, dificultad, tematica, descripcion, tiempoMax, jugadoresMin, jugadoresMax, edadRecomendada);
+			int tiempoMax, int jugadoresMin, int jugadoresMax, int edad_recomendada) {
+		super(idSala, nombre, dificultad, tematica, descripcion, tiempoMax, jugadoresMin, jugadoresMax, edad_recomendada);
 		// TODO Auto-generated constructor stub
 	}
 
