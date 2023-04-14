@@ -41,4 +41,8 @@ public class SalaFisica extends Sala{
 	public static void clearSalasCargadas() {
 		salasFisicasCargadas.clear();
 	}
+	public static SalaFisica datosSalaFisica(String idSala) {
+		SalaFisica salafisica = (SalaFisica) salasFisicasCargadas.get(idSala);
+		return salafisica;
+	}
 }
