@@ -369,7 +369,103 @@ public class BilboSKP extends DBC{
 			return null;
 		}
 		
-		
+		public static Vector<Partida> obtenerRankingSalaOnline(String idSala) throws Throwable {
+		try {
+			// crear el vector que vamos a devolver
+			Vector<Partida> vectorPartidas = new Vector<Partida>();
+			// hacer sentencia sql para crear el ranking
+			String sentenciaSQL = "SELECT * FROM `partidaonline` where idSalaOnline='" + idSala
+					+ "' order by puntaje desc limit 10;";
+			// hacer conexion
+			BilboSKP conexion = new BilboSKP();
+			ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+			// hacer un bucle de cada fila que tiene el resultset
+			while (resultado.next()) {
+				// obtener los campos de cada columna para esta fila
+				int idPartida = resultado.getInt("idPartida");
+				String idSalaOnline = resultado.getString("idSalaOnline");
+				String idReserva = "0";
+				int idAnfitrion = resultado.getInt("idAnfitrion");
+				int puntaje = resultado.getInt("puntaje");
+				int numeroJugadores = resultado.getInt("numeroJugadores");
+
+				String nombreGrupo = resultado.getString("nombreGrupo");
+				Timestamp fechaInicio = resultado.getTimestamp("fechaInicio");
+				Timestamp fechaFin = resultado.getTimestamp("fechaFin");
+
+				Partida partida = new Partida(idPartida, idAnfitrion, idReserva, puntaje, numeroJugadores, idSalaOnline,
+						nombreGrupo, fechaInicio, fechaFin);
+				vectorPartidas.add(partida);
+			}
+
+			// hacer syso de los horarios obtenidos
+			System.out.println("Mejores puntos la sala con id " + idSala + ":");
+			if (vectorPartidas.size() > 0) {
+				for (int i = 0; i < vectorPartidas.size(); i++) {
+					Partida pa = vectorPartidas.get(i);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+					String fechaHoraString = sdf.format(pa.getFechaInicio());
+					System.out.println(pa.getNombreGrupo() + ", " + pa.getPuntos() + " puntos, " + fechaHoraString);
+				}
+			}
+			conexion.cerrarFlujo();
+			return vectorPartidas;
+
+		} catch (Exception e) {
+			BilboSKP.sysoError("Error en obtenerRankingSalaOnline");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Vector<Partida> obtenerRankingSalaFisica(String idSala) throws Throwable {
+		try {
+			// crear el vector que vamos a devolver
+			Vector<Partida> vectorPartidas = new Vector<Partida>();
+			// hacer sentencia sql para crear el ranking
+			String sentenciaSQL = "SELECT * FROM `partidafisica` where idSalaFisica='" + idSala
+					+ "' order by puntaje desc limit 10;";
+			// hacer conexion
+			BilboSKP conexion = new BilboSKP();
+			ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+			// hacer un bucle de cada fila que tiene el resultset
+			while (resultado.next()) {
+				// obtener los campos de cada columna para esta fila
+				int idPartida = resultado.getInt("idPartida");
+				String idSalaFisica = resultado.getString("idSalaFisica");
+				String idReserva = resultado.getString("idReserva");
+				int idAnfitrion = 0;
+				int puntaje = resultado.getInt("puntaje");
+				int numeroJugadores = resultado.getInt("numeroJugadores");
+				String nombreGrupo = resultado.getString("nombreGrupo");
+				Timestamp fechaInicio = resultado.getTimestamp("fechaInicio");
+				Timestamp fechaFin = resultado.getTimestamp("fechaFin");
+
+				Partida partida = new Partida(idPartida, idAnfitrion, idReserva, puntaje, numeroJugadores, idSalaFisica,
+						nombreGrupo, fechaInicio, fechaFin);
+				vectorPartidas.add(partida);
+			}
+
+			// hacer syso de los horarios obtenidos
+			System.out.println("Mejores puntos la sala con id " + idSala + ":");
+			if (vectorPartidas.size() > 0) {
+				for (int i = 0; i < vectorPartidas.size(); i++) {
+					Partida pa = vectorPartidas.get(i);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+					String fechaHoraString = sdf.format(pa.getFechaInicio());
+					System.out.println(pa.getNombreGrupo() + ", " + pa.getPuntos() + " puntos, " + fechaHoraString);
+
+				}
+			}
+			conexion.cerrarFlujo();
+			return vectorPartidas;
+
+		} catch (Exception e) {
+			BilboSKP.sysoError("Error en obtenerRankingSalaFisica");
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	}
 }
