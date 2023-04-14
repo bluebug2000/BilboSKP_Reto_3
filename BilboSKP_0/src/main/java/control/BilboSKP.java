@@ -40,9 +40,9 @@ public class BilboSKP extends DBC{
 				int tiempoMax = resultado.getInt("tiempoMax");
 				int jugadoresMin = resultado.getInt("jugadoresMin");
 				int jugadoresMax = resultado.getInt("jugadoresMax");
-				int edadRecomendada = resultado.getInt("edadRecomendada");
+				int edad_recomendada = resultado.getInt("edad_recomendada");
 
-				SalaOnline sala = new SalaOnline(idSala, nombre, dificultad, tematica, descripcion, tiempoMax, jugadoresMin, jugadoresMax, edadRecomendada);
+				SalaOnline sala = new SalaOnline(idSala, nombre, dificultad, tematica, descripcion, tiempoMax, jugadoresMin, jugadoresMax, edad_recomendada);
 				//agregar sala al vector
 				vectorSalasOnline.add(sala);
 			}
