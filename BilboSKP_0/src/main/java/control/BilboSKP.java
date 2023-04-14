@@ -269,7 +269,11 @@ public class BilboSKP extends DBC {
 
 		return vectorCupones;
 	}
-
+	
+	public void RecibirCuponBienvenida(int idSuscriptor) {
+		String sentenciaSQL = "INSERT INTO cupon( idSuscrioptor, fechaCaducidad, estado) VALUES ('"+idSuscriptor+"'2070-12-31','ACTIVO' );";
+		
+	}
 	public static Suscriptor getDatosSuscriptor(int idSuscriptor) throws Throwable {
 
 		// hacer sentencia sql select todas las salas
