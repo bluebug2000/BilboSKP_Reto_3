@@ -226,6 +226,105 @@ public class BilboSKP extends DBC{
 			}
 			return null;
 		}
+	
+	public static Vector<Partida> obtenerPartidasFisica(int idSuscriptor) throws Throwable {
+		try {
+			// crear el vector que vamos a devolver
+			Vector<Partida> vectorPartidas = new Vector<Partida>();
+			// hacer sentencia sql para crear el ranking
+			String sentenciaSQL = "SELECT idPartida, re.idReserva, re.idSalaFisica, puntaje, numeroJugadores, nombreGrupo,fechaInicio,fechaFin FROM partidafisica pf, reserva re where re.idReserva=pf.idReserva and re.idSuscriptor='"
+					+ idSuscriptor + "'; ";
+			// hacer conexion
+			BilboSKP conexion = new BilboSKP();
+			ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+			// hacer un bucle de cada fila que tiene el resultset
+			while (resultado.next()) {
+				// obtener los campos de cada columna para esta fila
+				int idPartida = resultado.getInt("idPartida");
+				String idSalaFisica = resultado.getString("idSalaFisica");
+				String idReserva = resultado.getString("idReserva");
+				int idAnfitrion = 0;
+				int puntaje = resultado.getInt("puntaje");
+				int numeroJugadores = resultado.getInt("numeroJugadores");
+				String nombreGrupo = resultado.getString("nombreGrupo");
+				Timestamp fechaInicio = resultado.getTimestamp("fechaInicio");
+				Timestamp fechaFin = resultado.getTimestamp("fechaFin");
+
+				Partida partida = new Partida(idPartida, idAnfitrion, idReserva, puntaje, numeroJugadores, idSalaFisica,
+						nombreGrupo, fechaInicio, fechaFin);
+				vectorPartidas.add(partida);
+			}
+
+			// hacer syso de los horarios obtenidos
+			System.out.println("Partidas fisicas del suscriptor con id " + idSuscriptor + ":");
+			if (vectorPartidas.size() > 0) {
+				for (int i = 0; i < vectorPartidas.size(); i++) {
+					Partida pa = vectorPartidas.get(i);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+					String fechaHoraString = sdf.format(pa.getFechaInicio());
+					System.out.println(pa.getIdReserva() + ", " + pa.getNombreGrupo() + ", " + pa.getNumJugadores()
+							+ " jugadores, " + pa.getPuntos() + " puntos, " + fechaHoraString);
+
+				}
+			}
+			conexion.cerrarFlujo();
+			return vectorPartidas;
+
+		} catch (Exception e) {
+			BilboSKP.sysoError("Error en obtenerPartidasFisica");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static Vector<Partida> obtenerPartidasOnline(int idSuscriptor) throws Throwable {
+		try {
+			// crear el vector que vamos a devolver
+			Vector<Partida> vectorPartidas = new Vector<Partida>();
+			// hacer sentencia sql para crear el ranking
+			String sentenciaSQL = "SELECT supao.idPartidaonline, po.idSalaOnline, po.idAnfitrion, puntaje, numeroJugadores, nombreGrupo,fechaInicio,fechaFin FROM partidaonline po, suscriptor_partidaonline supao, suscriptor su where supao.idPartidaonline=po.idPartida and supao.idSuscriptor=su.idSuscriptor and su.idSuscriptor="+ idSuscriptor +"; ";
+			// hacer conexion
+			BilboSKP conexion = new BilboSKP();
+			ResultSet resultado = conexion.SQLQuery(sentenciaSQL);
+			// hacer un bucle de cada fila que tiene el resultset
+			while (resultado.next()) {
+				// obtener los campos de cada columna para esta fila
+				int idPartida = resultado.getInt("idPartidaonline");
+				String idSalaOnline = resultado.getString("idSalaonline");
+				String idReserva = "";
+				int idAnfitrion = resultado.getInt("idAnfitrion");
+				int puntaje = resultado.getInt("puntaje");
+				int numeroJugadores = resultado.getInt("numeroJugadores");
+				String nombreGrupo = resultado.getString("nombreGrupo");
+				Timestamp fechaInicio = resultado.getTimestamp("fechaInicio");
+				Timestamp fechaFin = resultado.getTimestamp("fechaFin");
+
+				Partida partida = new Partida(idPartida, idAnfitrion, idReserva, puntaje, numeroJugadores, idSalaOnline,
+						nombreGrupo, fechaInicio, fechaFin);
+				vectorPartidas.add(partida);
+			}
+
+			// hacer syso de los horarios obtenidos
+			System.out.println("Partidas fisicas del suscriptor con id " + idSuscriptor + ":");
+			if (vectorPartidas.size() > 0) {
+				for (int i = 0; i < vectorPartidas.size(); i++) {
+					Partida pa = vectorPartidas.get(i);
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+					String fechaHoraString = sdf.format(pa.getFechaInicio());
+					System.out.println(pa.getIdPartida() + ", " + pa.getNombreGrupo() + ", " + pa.getNumJugadores()
+							+ " jugadores, " + pa.getPuntos() + " puntos, " + fechaHoraString);
+
+				}
+			}
+			conexion.cerrarFlujo();
+			return vectorPartidas;
+
+		} catch (Exception e) {
+			BilboSKP.sysoError("Error en obtenerPartidasOnline");
+			e.printStackTrace();
+		}
+		return null;
+	}
 	//TODO FALTA HACER CLASE CUPON
 	public static Vector<Cupon> getCuponesSuscriptor(int idSuscriptor) throws Throwable {
 		Vector<Cupon> vectorCupones = new Vector<Cupon>();
