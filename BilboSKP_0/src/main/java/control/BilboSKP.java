@@ -245,7 +245,45 @@ public class BilboSKP extends DBC {
 		return null;
 	}
 
-	// TODO FALTA HACER CLASE CUPON
+	
+//CUPONES
+	//Cambiar el estado del cupon de Activo / En uso / Gastado / Caducado
+	public static Cupon CambiarEstado(Cupon cupon) {
+		LocalDate FechaActual =LocalDate.now();
+		LocalDate FechaCaducidad = cupon.getFechaCaducidad().toLocalDate();
+		String disponibilidad=cupon.getEstado();
+		
+		//Si un cupon tiene estado entra en en la condicion
+		if(disponibilidad!=null) {
+			if(disponibilidad.equalsIgnoreCase("ACTIVO")) {
+			
+			//Si esta activo significa que puede estar caducado
+			if(FechaActual.isBefore(FechaCaducidad)) {
+				//Si no esta caducado se cambia el estado a EN USO
+				cupon.setEstado("EN USO");
+				
+				//Si no esta caducado se cambia el estado a EN USO
+				}else if(FechaActual.isAfter(FechaCaducidad)) {
+					cupon.setEstado("CADUCADO");
+					return cupon;
+				}else {
+					System.out.println("Caduca hoy");
+					return cupon;
+				}
+			
+			//Si no esta caducado igual esta en uso
+			}else if(disponibilidad.equalsIgnoreCase("EN USO")){
+				cupon.setEstado("GASTADO");
+				return cupon;
+			}else {
+				System.out.println("Esta inutilizable");
+			}
+			return cupon;
+		}else cupon.setEstado("ACTIVO");
+		return cupon;
+	}
+	
+	//Conseguir los cupones de un suscriptor por su id
 	public static Vector<Cupon> getCuponesSuscriptor(int idSuscriptor) throws Throwable {
 		Vector<Cupon> vectorCupones = new Vector<Cupon>();
 		// hacer sentencia sql select todas las salas
@@ -260,14 +298,22 @@ public class BilboSKP extends DBC {
 			// obtener los campos de cada columna para esta fila
 			String idCupon = resultado.getString("idCupon");
 			Date fechaCaducidad = resultado.getDate("fechaCaducidad");
-			String dificultad = resultado.getString("estado");
+			String Estado = resultado.getString("estado");
 			System.out.println(idCupon);
-			Cupon cupon = null; // new Cupon(idCupon,fechaCaducidad,dificultad);
+			Cupon cupon = new Cupon(idCupon, Estado , (java.sql.Date) fechaCaducidad);
 			// agregar cupon al vector
 			vectorCupones.add(cupon);
 		}
 
 		return vectorCupones;
+	}
+	
+	//Enviar cupon de bienvenida
+	public void RecibirCuponBienvenida(int idSuscriptor) throws Throwable {
+
+	    LocalDate fechaCaducidad = LocalDate.of(2070, 12, 31);
+	    BilboSKP conexion = new BilboSKP();
+		String sentenciaSQL = "INSERT INTO cupon( idSuscrioptor, fechaCaducidad, estado) VALUES ('"+idSuscriptor+","+fechaCaducidad+",'ACTIVO' );";
 	}
 
 	public static Suscriptor getDatosSuscriptor(int idSuscriptor) throws Throwable {
